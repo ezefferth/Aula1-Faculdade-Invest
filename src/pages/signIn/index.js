@@ -1,6 +1,6 @@
 
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 
 import {
   View,
@@ -15,46 +15,19 @@ import LogoInvest from '../../assets/logoInvest.svg';
 import { useNavigation } from '@react-navigation/native';
 import * as Animatable from 'react-native-animatable';
 
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import Firebase from '../../../firebase';
+
+import { AuthContext } from '../../../src/components/context';
 
 export default function SignIn() {
+
+  const { handleSignIn } = useContext(AuthContext);
 
   const navigation = useNavigation();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const auth = getAuth(Firebase);
 
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(user => {
-      if (user) {
-        navigation.navigate('Home');
-      }
-    })
-
-    return unsubscribe;
-  }, []);
-
-  /* 
-    function handleSignIn(event) {
-      event.preventDefault();
-      const email = event.email;
-      const password = event.password;
-    } */
-
-  function handleSignIn() {
-    signInWithEmailAndPassword(auth, email, password)
-      .then(() => {
-        console.log("Sign in successful");
-        alert("Sign in successful");
-        navigation.navigate('Home');
-
-      }).catch((error) => {
-        alert(error.message);
-      });
-  }
 
 
   return (
@@ -88,7 +61,7 @@ export default function SignIn() {
           secureTextEntry
         />
 
-        <TouchableOpacity style={styles.btnSignIn} onPress={() => handleSignIn()} >
+        <TouchableOpacity style={styles.btnSignIn} onPress={(event) => handleSignIn(event, email, password)} >
           <Text style={styles.btnText}>Entrar</Text>
         </TouchableOpacity>
 

@@ -1,11 +1,11 @@
 
 
-import React, { useEffect } from 'react';
+import React, { useContext } from 'react';
 
-import { getAuth, signOut } from "firebase/auth";
-import Firebase from '../../../firebase';
 
 import { useNavigation } from '@react-navigation/native';
+
+import { AuthContext } from '../../../src/components/context'
 
 import {
   View,
@@ -16,33 +16,16 @@ import {
 
 export default function Home() {
 
-  const auth = getAuth(Firebase);
-
-  const navigation = useNavigation();
-
-/*   useEffect(() => {
-
-    console.log(auth.currentUser)
-    if(auth.currentUser === undefined) {
-      navigation.navigate('Welcome');
-    }
-
-  },[auth]); */
+  const {
+    handleSignOut,
+    signed,
+    user
+  } = useContext(AuthContext);
 
 
-  function handleSignOut() {
-    signOut(auth).then(() => {
-      console.log("sign out successfully");
-      alert('Sign out successfully');
-      navigation.navigate('Welcome');
-    })
-      .catch((error) => {
-        alert(error.message);
-      });
+  function handleTest() {
+    console.log(user);
   }
-
-
-
 
   return (
     <View>
@@ -51,6 +34,9 @@ export default function Home() {
 
       <TouchableOpacity style={styles.btnSignIn} onPress={() => handleSignOut()}>
         <Text style={styles.btnText}>Sair</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.btnSignIn} onPress={() => handleTest()}>
+        <Text style={styles.btnText}>TEST</Text>
       </TouchableOpacity>
     </View>
   )

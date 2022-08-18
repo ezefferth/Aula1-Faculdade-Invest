@@ -1,5 +1,5 @@
 # Aula1-Faculdade-Invest
-#Exemplo de um aplicativo com React Native, Auth, Navigatio, Firebase
+# Exemplo de um aplicativo com React Native, Auth, Navigatio, Firebase
 
 
 Neste código você irá visualizar alguns conceitos e modos de desenvolvimento de uma aplicação com React Native
@@ -9,3 +9,4 @@ Neste código você irá visualizar alguns conceitos e modos de desenvolvimento 
 
 Professor: Ezéferth Chlysman Araujo Fernandes
 Faculdade Invest 
+s

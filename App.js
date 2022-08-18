@@ -1,18 +1,26 @@
 
 import React from 'react';
-import { StatusBar } from 'react-native';
+//import { StatusBar } from 'react-native';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 import { NavigationContainer } from '@react-navigation/native';
 import Routes from './src/routes';
 
-
+import AuthProvider from './src/components/context';
 
 export default function App() {
   return (
+
+
     <NavigationContainer>
-      <StatusBar backgroundColor='#A80800' barStyle='dark-content' />
-      <Routes />
+      <AuthProvider>
+        {/* <StatusBar backgroundColor='#A80800' barStyle='dark-content' /> */}
+        <Routes />
+      </AuthProvider>
     </NavigationContainer>
+
   );
 }
 

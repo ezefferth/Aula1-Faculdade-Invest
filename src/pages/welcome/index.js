@@ -1,9 +1,7 @@
 
 
-import React from 'react';
+import React, { useContext } from 'react';
 
-import Firebase from '../../../firebase';
-import { getAuth } from "firebase/auth";
 
 import {
   View,
@@ -17,22 +15,38 @@ import LogoInvest from '../../assets/logoInvest.svg';
 import { useNavigation } from '@react-navigation/native';
 import * as Animatable from 'react-native-animatable';
 
+import { AuthContext } from '../../components/context';
+
+
 export default function Welcome() {
 
   const navigation = useNavigation();
 
-  const auth = getAuth(Firebase);
+
+  const { signed } = useContext(AuthContext);
+
 
   const handleSign = () => {
+    console.log('handleSign', signed);
 
-    if (auth?.currentUser) {
+    if (signed) {
       navigation.navigate('Home')
     }
     else {
       navigation.navigate('SignIn');
     }
   }
-
+  /*   function handleSignOut() {
+      signOut(auth).then(() => {
+        console.log("sign out successfully");
+        alert('Sign out successfully');
+        navigation.navigate('Welcome');
+      })
+        .catch((error) => {
+          alert(error.message);
+        });
+      console.log(auth);
+    } */
   return (
     <View style={styles.container}>
 
@@ -54,6 +68,7 @@ export default function Welcome() {
           <Text style={styles.buttonText}>Acessar</Text>
         </TouchableOpacity>
       </Animatable.View>
+
     </View>
 
 
@@ -63,11 +78,11 @@ export default function Welcome() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF'
+    backgroundColor: '#00000'
   },
   containerTitle: {
     flex: 3,
-    backgroundColor: 'FFFFFF',
+    backgroundColor: '#FFFFFF',
 
   },
   containerForm: {

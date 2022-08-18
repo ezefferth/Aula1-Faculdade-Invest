@@ -1,3 +1,7 @@
+import {
+  View,
+} from 'react-native';
+
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -12,74 +16,74 @@ import Settings from '../pages/settings';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-import { getAuth } from "firebase/auth";
-import Firebase from '../../firebase';
+import { AuthContext } from '../components/context';
+import React, { useContext } from 'react';
 
 
 export default function Routes() {
 
-  const auth = getAuth(Firebase);
 
-  const user = auth.currentUser;
+  const { signed } = useContext(AuthContext);
 
-  const HomeStack = createNativeStackNavigator();
-  const SettingsStack = createNativeStackNavigator();
-
+  /*   const [isLoading, setIsLoading] = useState(true);
+    const [userToken, setUserToken] = useState(null); */
 
   //TODAS STACKS DA HOME SERARAM AQUI
   //EM SETTINGS SE HOUVER DA MESMA FORMA
+  const HomeStack = createNativeStackNavigator();
   function HomeStackScreen() {
     return (
-      <HomeStack.Navigator>
-        <HomeStack.Screen name="Home" component={Home} options={{ headerShown: false }} />
+      <HomeStack.Navigator screenOptions={{ headerShown: false }}>
+        <HomeStack.Screen name="HomeScreen" component={Home} />
       </HomeStack.Navigator>
     )
   }
 
+  const SettingsStack = createNativeStackNavigator();
   function SettingsStackScreen() {
     return (
-      <SettingsStack.Navigator>
-        <SettingsStack.Screen name="Settings" component={Settings} options={{ headerShown: false }} />
+      <SettingsStack.Navigator screenOptions={{ headerShown: false }}>
+        <SettingsStack.Screen name="SettingsStack" component={Settings} />
       </SettingsStack.Navigator>
     )
   }
 
-
-
-  return (
-
-    user ? (
-
-      <Tab.Navigator>
-        <Tab.Screen name='HomeTab' component={HomeStackScreen} options={{ headerShown: false }} />
-        <Tab.Screen name="SettingsTab" component={SettingsStackScreen} options={{ headerShown: false }} />
+  function NotSignedScreen() {
+    return (
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen
           name="Welcome"
           component={Welcome}
-          options={{ headerShown: false }}
-        />
-      </Tab.Navigator>
-
-    ) : (
-
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Welcome"
-          component={Welcome}
-          options={{ headerShown: false }}
+        //options={{ headerShown: false }}
         />
         <Stack.Screen
           name="SignIn"
           component={SignIn}
-          options={{ headerShown: false }}//retira o header nome da page
+        //options={{ headerShown: false }}//retira o header nome da page
         />
         <Stack.Screen
           name="SignUp"
           component={SignUp}
-          options={{ headerShown: false }}//retira o header nome da page
+        //options={{ headerShown: false }}//retira o header nome da page
         />
       </Stack.Navigator>
     )
+  }
 
+  function SignedScreens() {
+    return (
+      <Tab.Navigator screenOptions={{ headerShown: false }}>
+        <Tab.Screen name='Home' component={HomeStackScreen} />
+        <Tab.Screen name="Settings" component={SettingsStackScreen} />
+      </Tab.Navigator>
+    )
+  }
+
+  return (
+    signed ? (
+      <SignedScreens />
+    ) : (
+      <NotSignedScreen />
+    )
   )
 }
